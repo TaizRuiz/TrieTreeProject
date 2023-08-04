@@ -12,6 +12,7 @@ public class TrieNode<E> {
    private boolean isFinalChar;
    private TrieNode[] hijos;
    private char content;
+   private String meaning;
     public TrieNode() {
         this.hijos=new TrieNode[26];
         this.isFinalChar=false;
@@ -20,7 +21,19 @@ public class TrieNode<E> {
        this();
        this.content=s;
     }
+    public TrieNode(char s, String meaning){
+        this(s);
+        this.meaning=meaning;
+    }
 
+    public String getMeaning() {
+        return meaning;
+    }
+
+    public void setMeaning(String meaning) {
+        this.meaning = meaning;
+    }
+    
     public boolean isIsFinalChar() {
         return isFinalChar;
     }
