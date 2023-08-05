@@ -87,10 +87,7 @@ public class Trie<E> {
         }
          return contains;
     }   
-    public void getMeaning(String s){
-      //metodo que me retorna el significado asociado a una palabra de existir
-    }
-    //
+   
 
     public boolean prefixIncluded(String s){
         if (s!=null){
@@ -100,7 +97,7 @@ public class Trie<E> {
             boolean exist=true;
             for (int i=0;i<caracteres.length;i++){
                 char caracter=caracteres[i];
-                int posChar=caracter-'a';
+                 int posChar=getCharPos(caracteres[i]);
                //posicion en el arreglo  
                  if (actual.getHijos()[posChar]!=null){
                      if (actual.getHijos()[posChar].getContent()==caracter){
@@ -126,8 +123,8 @@ public class Trie<E> {
                  char[] caracteres=s.toCharArray();
                  TrieNode actual=root;
                  for (int i=0;i<caracteres.length;i++){
-                     char caracter=caracteres[i];
-                     int posChar=caracter-'a';
+                     
+                     int posChar=getCharPos(caracteres[i]);
                       if (actual.getHijos()[posChar]!=null){
                           actual=actual.getHijos()[posChar];
                      }
@@ -139,7 +136,27 @@ public class Trie<E> {
         return node;
          } 
     
-    
+    public int getCharPos(char c){
+        return c-'a';
+    }
+    public TrieNode<E> getEndWord(String s){
+        TrieNode<E> nodo=null;
+        if (this.containsWord(s)){
+            s=s.toLowerCase();
+             char[] chars=s.toCharArray();
+            TrieNode nodoCurrent=root;
+            for (int i=0;i<s.length();i++){
+               int indice=getCharPos(chars[i]);
+               nodoCurrent=nodoCurrent.getHijos()[indice];
+            }
+            nodo=nodoCurrent;
+        }
+        return nodo;
+    }
+    public String getMeaningFromWord(String s ){
+        s=s.toLowerCase();
+        return getEndWord(s).getMeaning();
+    }
 
     public void print() {
 	    	List<String> res = new ArrayList<String>(); 

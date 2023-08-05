@@ -1,0 +1,4 @@
+palabra;significado
+papa;progenitor
+manzana;fruta
+carro;medio de transporte
