@@ -209,6 +209,7 @@ public class Trie<E> {
         if(this.containsWord(eliminar)){
             //se va a eliminar
             deleteNode(nodoPadre, nodoFinal, eliminar);
+            numWords = numWords -1;
             return true;
         }
         return false;
