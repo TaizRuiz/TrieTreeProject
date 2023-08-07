@@ -53,5 +53,24 @@ public class TrieNode<E> {
     public char getContent() {
         return content;
     }
+    
+    public boolean hasChildren(){
+        for (TrieNode element : hijos) {
+            if (element != null) {
+                return true; // Si se encuentra un elemento no nulo, retorna false.
+            }
+        }
+        return false; // Si todos los elementos son nulos, retorna true.
+    }
+    
+    public int numChildren(){
+        int children = 0;
+        for (TrieNode element : hijos) {
+            if (element != null) {
+                children +=1;
+            }
+        }
+        return children;
+    }
    
 }

@@ -7,6 +7,7 @@ package com.mycompany.trietree1;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  *
@@ -115,6 +116,8 @@ public class Trie<E> {
         }
         return false;
     }
+    
+    //Aqui me debe pasar un prefijo 
     public TrieNode<E> getCommonNode(String s){
         TrieNode<E> node=null;
         if (s!=null){
@@ -196,5 +199,46 @@ public class Trie<E> {
    
     public int getNumberOfWords(){
         return this.numWords;
+    }
+    
+    public boolean delete(String eliminar){
+        //Agarrar el final char 
+        TrieNode nodoFinal = this.getEndWord(eliminar);
+        TrieNode nodoPadre = this.root;
+       
+        if(this.containsWord(eliminar)){
+            //se va a eliminar
+            deleteNode(nodoPadre, nodoFinal, eliminar);
+            return true;
+        }
+        return false;
+        
+    }
+    
+    private void deleteNode(TrieNode nodo, TrieNode nodoFinalPalabra, String eliminar){ 
+        //Se va sacando el primer caracter
+        char caracter = eliminar.charAt(0);
+        //la posicion 
+        int index = caracter-'a';    
+        TrieNode nodoHijo =nodo.getHijos()[index];
+        
+        if(nodoHijo == nodoFinalPalabra){
+            //tiene hijos?
+            if(nodoHijo.hasChildren()){
+                nodo.setIsFinalChar(false);
+            }
+            else{
+                //deberia poner en nulo desde el padre pero no puedo alcanzarlo
+                nodo.getHijos()[index] = null;
+            }
+        }
+        else{
+            String restoPalabra = eliminar.substring(1);
+            deleteNode(nodoHijo,nodoFinalPalabra,restoPalabra);
+            
+            if(!nodoHijo.hasChildren()){
+                nodo.getHijos()[index] = null;
+            }
+        }
     }
 }
