@@ -226,7 +226,7 @@ public class Trie<E> {
         if(nodoHijo == nodoFinalPalabra){
             //tiene hijos?
             if(nodoHijo.hasChildren()){
-                nodo.setIsFinalChar(false);
+                nodoHijo.setIsFinalChar(false);
             }
             else{
                 //deberia poner en nulo desde el padre pero no puedo alcanzarlo

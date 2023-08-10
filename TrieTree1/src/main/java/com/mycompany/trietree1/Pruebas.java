@@ -31,5 +31,6 @@ public class Pruebas {
         System.out.println(prueba.delete("popeya"));
         System.out.println(prueba.delete("papa"));
         System.out.println(prueba.delete("llave"));
+        prueba.print();
     }
 }
