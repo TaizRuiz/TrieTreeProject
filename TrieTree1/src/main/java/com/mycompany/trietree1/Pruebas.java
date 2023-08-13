@@ -17,7 +17,9 @@ public class Pruebas {
         prueba.insert("Popeya");
         prueba.insert("Poramo");
         prueba.insert("Llave","entrar");
-        prueba.insert("papas");
+        prueba.print();
+    System.out.println(prueba.getNumberOfWords());
+
         
 //        System.out.println(prueba.containsWord("hola"));
 //        System.out.println(prueba.containsWord("papa"));
@@ -32,10 +34,10 @@ public class Pruebas {
         System.out.println(prueba.delete("popeya"));
         System.out.println(prueba.delete("papa"));
         System.out.println(prueba.delete("llave"));
-        System.out.println(prueba.delete("papas"));
+        
         prueba.print();
-        prueba.containsWord("papaya");
-
+        System.out.println(prueba.getNumberOfWords());
+        
         TrieTree1.saveDictionary("diccionarioPrueba", prueba);
     }
 }
