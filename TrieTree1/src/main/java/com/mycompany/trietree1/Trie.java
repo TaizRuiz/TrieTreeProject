@@ -14,16 +14,17 @@ import java.util.Stack;
  * @author USUARIO
  */
 public class Trie<E> {
-    private int numWords;
+
     private TrieNode<E> root;
 
     public Trie() {
-        this.numWords=0;
+      
         root=new TrieNode<E>();
     }
     //permite insertar una palabra con su significado
     public boolean insert(String p, String m){
-         if (p!=null && (!this.containsWord(p))){
+         if (p!=null ){
+        //&& (!this.containsWord(p)
            p=p.toLowerCase();
            char[] chars=p.toCharArray();
            TrieNode<E> actual=this.root;
@@ -32,6 +33,7 @@ public class Trie<E> {
                //contenido
                int posChar=caracter-'a';
                //posicion en el arreglo 
+              
                if (actual.getHijos()[posChar]==null){
                    //si ese caracter no esta en la posicion del arreglo 
                    //crea una referencia a un nuevo nodo en ese indice 
@@ -49,7 +51,7 @@ public class Trie<E> {
                System.out.println(actual.getMeaning());
            }
           
-           numWords++;
+       
        }
        return false;
     }
@@ -93,32 +95,22 @@ public class Trie<E> {
     public boolean prefixIncluded(String s){
         if (s!=null){
            s=s.toLowerCase();
-           char[] caracteres=s.toCharArray();
-            TrieNode actual=root;
-            boolean exist=true;
-            for (int i=0;i<caracteres.length;i++){
-                char caracter=caracteres[i];
-                 int posChar=getCharPos(caracteres[i]);
-               //posicion en el arreglo  
-                 if (actual.getHijos()[posChar]!=null){
-                     if (actual.getHijos()[posChar].getContent()==caracter){
-                         actual=actual.getHijos()[posChar];
-                     }else{
-                         exist=false;
-                         break;
-                     }
-                 }else{
-                     exist=false;
-                     break;
-                 }
+
+        if (containsWord(s)){
+           
+            TrieNode<E> nFinal=getEndWord(s);
+            if (nFinal.hasChildren()){
+                return true;
+            }else{
+                return false;
             }
-           return exist; 
+        }
         }
         return false;
     }
     
     //Aqui me debe pasar un prefijo 
-    public TrieNode<E> getCommonNode(String s){
+    private TrieNode<E> getCommonNode(String s){
         TrieNode<E> node=null;
         if (s!=null){
             if (prefixIncluded(s)){
@@ -142,7 +134,7 @@ public class Trie<E> {
     public int getCharPos(char c){
         return c-'a';
     }
-    public TrieNode<E> getEndWord(String s){
+    private TrieNode<E> getEndWord(String s){
         TrieNode<E> nodo=null;
         if (this.containsWord(s)){
             s=s.toLowerCase();
@@ -166,6 +158,12 @@ public class Trie<E> {
 	    	helper(root, res, "");
 	    	System.out.println(res);
 	    }
+    
+     public List<String> getAllWordsFromTrie(){
+        List<String> res = new ArrayList<String>(); 
+	helper(root, res, "");
+        return res;
+    }
 			
     public List<String> getPossibleWord(String s){
         List<String> res = new ArrayList<String>(); 
@@ -180,7 +178,7 @@ public class Trie<E> {
         }
         return res;
     }
-    public void helper(TrieNode node, List<String> res, String prefix) {
+    private void helper(TrieNode node, List<String> res, String prefix) {
                         prefix=prefix.toLowerCase();
 			if (node == null ) //base condition			
 				return;		
@@ -198,44 +196,62 @@ public class Trie<E> {
 
    
     public int getNumberOfWords(){
-        return this.numWords;
+        return this.getAllWordsFromTrie().size();
     }
     
     public boolean delete(String eliminar){
         //Agarrar el final char 
+        eliminar=eliminar.toLowerCase();
         TrieNode nodoFinal = this.getEndWord(eliminar);
         TrieNode nodoPadre = this.root;
        
         if(this.containsWord(eliminar)){
             //se va a eliminar
-            deleteNode(nodoPadre, nodoFinal, eliminar);
-            numWords = numWords -1;
-            return true;
+            if (prefixIncluded(eliminar)){
+                deleteNodePrefix(nodoPadre, nodoFinal, eliminar);
+
+                return true;
+            }else{
+                deleteNode(eliminar);
+
+                return true;
+            }
+            
+            
+           
         }
         return false;
         
     }
+     private void deleteNode(String s){ 
+  
+         TrieNode nodoFinal=getEndWord(s);
+         nodoFinal.setIsFinalChar(false);
+    }
     
-    private void deleteNode(TrieNode nodo, TrieNode nodoFinalPalabra, String eliminar){ 
+    private void deleteNodePrefix(TrieNode nodo, TrieNode nodoFinalPalabra, String eliminar){ 
         //Se va sacando el primer caracter
+        eliminar=eliminar.toLowerCase();
         char caracter = eliminar.charAt(0);
         //la posicion 
         int index = caracter-'a';    
         TrieNode nodoHijo =nodo.getHijos()[index];
-        
-        if(nodoHijo == nodoFinalPalabra){
+       
+        if(nodoHijo == nodoFinalPalabra && nodoHijo.isIsFinalChar()==true){
+            System.out.println("entro al if");
             //tiene hijos?
             if(nodoHijo.hasChildren()){
-                nodo.setIsFinalChar(false);
+               
+                nodoHijo.setIsFinalChar(false);
             }
             else{
                 //deberia poner en nulo desde el padre pero no puedo alcanzarlo
-                nodo.getHijos()[index] = null;
+                nodoHijo.getHijos()[index] = null;
             }
         }
         else{
             String restoPalabra = eliminar.substring(1);
-            deleteNode(nodoHijo,nodoFinalPalabra,restoPalabra);
+            deleteNodePrefix(nodoHijo,nodoFinalPalabra,restoPalabra);
             
             if(!nodoHijo.hasChildren()){
                 nodo.getHijos()[index] = null;

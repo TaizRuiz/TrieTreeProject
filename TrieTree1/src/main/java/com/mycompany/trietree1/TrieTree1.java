@@ -18,42 +18,22 @@ public class TrieTree1 {
 
     public static void main(String[] args) {
         Trie<Character>prueba=new Trie();
-        prueba.insert("Hola","saludo");
-        prueba.insert("Papa");
-        prueba.insert("Papaya","fruta");
-        prueba.insert("Popeya");
-        prueba.insert("Poramo");
-        prueba.insert("Llave","entrar");
-        System.out.println(prueba.getNumberOfWords());
-        System.out.println(prueba.containsWord("Holi"));
-        System.out.println(prueba.containsWord("Hola"));
-        System.out.println(prueba.containsWord("Papa"));
+        prueba.insert("casa");
+        prueba.insert("caseta");
+        
+        prueba.insert("casador","persona");
+        prueba.insert("casadora");
+        prueba.insert("casota");
+        prueba.insert("casada");
        
-        System.out.println(prueba.containsWord("paramo"));
-        System.out.println(prueba.containsWord("Papaya"));
-        System.out.println("Prueba prefijos");
-        System.out.println(prueba.prefixIncluded("H"));
-        System.out.println("Pa incluido prefijo");
-        System.out.println(prueba.prefixIncluded("Pa"));
-        System.out.println(prueba.prefixIncluded("Papa"));
-        System.out.println(prueba.prefixIncluded("Ho"));
-        System.out.println(prueba.prefixIncluded("Par"));
-        System.out.println(prueba.prefixIncluded("Pas"));
-        System.out.println("common node");
-        System.out.println(prueba.getCommonNode("Pa"));
-        System.out.println(prueba.getCommonNode("O"));
-        System.out.println(prueba.getCommonNode("param"));
-        System.out.println("Imprimir");
         prueba.print();
-        System.out.println("posibles palabras");
-        prueba.getPossibleWord("P");
-        System.out.println("Obtener significado");
-        System.out.println(prueba.getMeaningFromWord("llave"));
-        System.out.println(prueba.getMeaningFromWord("Hola"));
-        System.out.println(prueba.getMeaningFromWord("po"));
-        Trie<Character>pruebaCargar=loadDictionary("diccionario");
-        pruebaCargar.print();
-        System.out.println(pruebaCargar.getMeaningFromWord("MANZANA"));
+        
+        System.out.println( prueba.getNumberOfWords());
+        System.out.println(prueba.delete("casota"));
+        System.out.println(prueba.delete("casadora"));
+
+        prueba.print();
+
     }
     public static Trie<Character> loadDictionary(String nomArchivo){
         

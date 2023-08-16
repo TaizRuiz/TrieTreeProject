@@ -17,6 +17,7 @@ public class Pruebas {
         prueba.insert("Popeya");
         prueba.insert("Poramo");
         prueba.insert("Llave","entrar");
+       
         
 //        System.out.println(prueba.containsWord("hola"));
 //        System.out.println(prueba.containsWord("papa"));
@@ -26,10 +27,12 @@ public class Pruebas {
         
         //CUANDO QUIERA HACER DELETE DEBEMOS PONER LAS LETRAS EN MINISCULA PORQUE
         //ASI ESTAN EN EL CONTENIDO DE CADA NODO TODAS MINISCULA
-
-        
+        prueba.print();
+        System.out.println(prueba.getNumberOfWords());
         System.out.println(prueba.delete("popeya"));
         System.out.println(prueba.delete("papa"));
         System.out.println(prueba.delete("llave"));
+        prueba.print();
+        System.out.println(prueba.getNumberOfWords());
     }
 }
