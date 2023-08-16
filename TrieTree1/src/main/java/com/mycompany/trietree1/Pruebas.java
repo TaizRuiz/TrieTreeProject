@@ -17,7 +17,11 @@ public class Pruebas {
         prueba.insert("Popeya");
         prueba.insert("Poramo");
         prueba.insert("Llave","entrar");
-       
+
+        prueba.print();
+    System.out.println(prueba.getNumberOfWords());
+
+
         
 //        System.out.println(prueba.containsWord("hola"));
 //        System.out.println(prueba.containsWord("papa"));
@@ -34,5 +38,12 @@ public class Pruebas {
         System.out.println(prueba.delete("llave"));
         prueba.print();
         System.out.println(prueba.getNumberOfWords());
+
+        
+        prueba.print();
+        System.out.println(prueba.getNumberOfWords());
+        
+        TrieTree1.saveDictionary("diccionario", prueba);
+
     }
 }

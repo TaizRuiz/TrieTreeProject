@@ -40,7 +40,7 @@ public class Trie<E> {
                    TrieNode<E> nuevoNodo=new TrieNode(caracter);
                    actual.getHijos()[posChar]=nuevoNodo;
                }
-               //pasa al siguiente 
+                   //pasa al siguiente 
                actual=actual.getHijos()[posChar];
            }
            //en el ultimo lo setea a true 
@@ -76,7 +76,7 @@ public class Trie<E> {
                     if (actual.getHijos()[posChar].getContent()!=caracter){
                          contains=false;
                     }
-                         actual=actual.getHijos()[posChar];
+                        actual=actual.getHijos()[posChar];
                 }else{
                       contains=false;
                     }
@@ -159,9 +159,11 @@ public class Trie<E> {
 	    	System.out.println(res);
 	    }
     
+
      public List<String> getAllWordsFromTrie(){
         List<String> res = new ArrayList<String>(); 
 	helper(root, res, "");
+
         return res;
     }
 			
@@ -241,12 +243,13 @@ public class Trie<E> {
             System.out.println("entro al if");
             //tiene hijos?
             if(nodoHijo.hasChildren()){
-               
                 nodoHijo.setIsFinalChar(false);
             }
+            
             else{
-                //deberia poner en nulo desde el padre pero no puedo alcanzarlo
-                nodoHijo.getHijos()[index] = null;
+                //Si en caso no tiene hijos
+                nodo.getHijos()[index] = null;
+
             }
         }
         else{
