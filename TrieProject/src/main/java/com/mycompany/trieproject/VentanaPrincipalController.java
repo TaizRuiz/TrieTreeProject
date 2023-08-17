@@ -14,11 +14,15 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 
 /**
  * FXML Controller class
@@ -30,26 +34,34 @@ public class VentanaPrincipalController implements Initializable {
     @FXML
     private TextField searchBar;
     @FXML
-    private Button btnBuscar;
-    @FXML
     private RadioButton bPosfijo;
     @FXML
     private RadioButton bAproximada;
     @FXML
     private ListView<String> wordsListContainer;
     @FXML
-    private TextArea meaningChart;
+    private AnchorPane meaningChart;
     @FXML
-    private Button btnAdd;
+    private ImageView btnAdd;
     @FXML
-    private Button btnDelete;
+    private ImageView btnDelete;
     @FXML
-    private Button btnExport;
+    private ImageView btnExport;
     @FXML
-    private Button btnImport;
+    private ImageView btnImport;
     private List<String> palabras;
     String palabraActual=null;
     String meaning=null;
+    @FXML
+    private ImageView btnModoJuego;
+    @FXML
+    private ImageView btnEstadisticas;
+    @FXML
+    private ImageView searchIcon;
+    @FXML
+    private Label labelPalabra;
+    @FXML
+    private Label labelMeaning;
     
    
     /**
@@ -57,29 +69,30 @@ public class VentanaPrincipalController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-      
-        
+                setTextStyle();
+                initializeicons();
                 searchBar.setOnKeyTyped(eh->{
-                this.meaningChart.clear();
+                this.labelMeaning.setText(null);
+                this.labelPalabra.setText(null);
                 if (!this.bAproximada.isSelected() && !this.bPosfijo.isSelected()){
                     List<String> lpalabras=App.trieApp.getPossibleWord(searchBar.getText());
-                    prepareComponents(meaningChart, wordsListContainer);
+                    prepareComponents();
                     wordsListContainer.getItems().addAll(lpalabras);
-                    showNotfound(wordsListContainer);
+                    showNotfound();
                    
                 }else if (this.bPosfijo.isSelected()){
                     //como se comporta cuando hacer busqueda externa
                     //cual es mi lista de nuevas posibles palabra?
                     List<String> lpalabras=App.trieApp.getWordsEndWith(searchBar.getText());
-                    prepareComponents(meaningChart, wordsListContainer);
+                    prepareComponents();
                     wordsListContainer.getItems().addAll(lpalabras);
-                    showNotfound(wordsListContainer);
+                    showNotfound();
                 }
                 else if (this.bAproximada.isSelected()){
                    List<String> lpalabras=App.trieApp.getSimilarWords(searchBar.getText());
-                    prepareComponents(meaningChart, wordsListContainer);
+                    prepareComponents();
                     wordsListContainer.getItems().addAll(lpalabras);
-                    showNotfound(wordsListContainer);
+                    showNotfound();
                     
                 }
                  
@@ -88,18 +101,18 @@ public class VentanaPrincipalController implements Initializable {
                 this.bPosfijo.setOnAction(eh->{
                     if (bPosfijo.isSelected()){
                         this.bAproximada.setSelected(false);
-                        prepareComponents(meaningChart, wordsListContainer);
+                        prepareComponents();
                          List<String> lpalabras=App.trieApp.getWordsEndWith(searchBar.getText());
                          wordsListContainer.getItems().addAll(lpalabras); 
-                         showNotfound(wordsListContainer);
+                         showNotfound();
                          
                     }
                     else if (!bAproximada.isSelected() && !bPosfijo.isSelected()){
                          this.bAproximada.setSelected(false);
-                         prepareComponents(meaningChart, wordsListContainer);
+                         prepareComponents();
                          List<String> lpalabras=App.trieApp.getPossibleWord(searchBar.getText());
                          wordsListContainer.getItems().addAll(lpalabras); 
-                         showNotfound(wordsListContainer);
+                         showNotfound();
                         
                     }
                    
@@ -107,17 +120,17 @@ public class VentanaPrincipalController implements Initializable {
                 this.bAproximada.setOnAction(eh->{
                     if (bAproximada.isSelected()){
                         this.bPosfijo.setSelected(false);
-                        prepareComponents(meaningChart, wordsListContainer);
+                        prepareComponents();
                     List<String> lpalabras=App.trieApp.getSimilarWords(searchBar.getText());
                     wordsListContainer.getItems().addAll(lpalabras);
-                    showNotfound(wordsListContainer);
+                    showNotfound();
                     
                     }  else if (!bAproximada.isSelected() && !bPosfijo.isSelected()){
                          this.bAproximada.setSelected(false);
-                         prepareComponents(meaningChart, wordsListContainer);
+                         prepareComponents();
                          List<String> lpalabras=App.trieApp.getPossibleWord(searchBar.getText());
                          wordsListContainer.getItems().addAll(lpalabras);
-                         showNotfound(wordsListContainer);
+                         showNotfound();
                           
                     }
                     
@@ -138,7 +151,7 @@ public class VentanaPrincipalController implements Initializable {
                      palabraActual=palabraActual.substring(1);
                  }
               meaning=App.trieApp.getMeaningFromWord(palabraActual);
-              meaningChart.setText(meaning);
+                  showWordMeaning(palabraActual, meaning);
               }
              
              
@@ -151,15 +164,41 @@ public class VentanaPrincipalController implements Initializable {
             
         });
     
-    }    
-    public static void showNotfound(ListView<String> s){
-        if (s.getItems().isEmpty()){
-            s.getItems().add("Word not found :(");
+    }
+    public void setTextStyle(){
+        this.labelMeaning.setStyle(
+        "-fx-font-size: 30pt;"
+        );
+         this.labelPalabra.setStyle(
+        "-fx-font-size: 15pt;"
+                + "-fx-font-style: bold;"+
+                "-fx-font-style:italic;"
+        );
+    }
+    public void showWordMeaning(String pal,String meaning){
+        this.labelPalabra.setText(pal);
+        this.labelMeaning.setText(meaning);
+       
+    }
+    public void initializeicons(){
+                this.searchIcon.setImage(new Image("file:iconos\\search.png"));
+                this.btnAdd.setImage(new Image("file:iconos\\add.png"));
+                this.btnDelete.setImage(new Image("file:iconos\\delete.png"));
+                this.btnExport.setImage(new Image("file:iconos\\export.png"));
+                this.btnImport.setImage(new Image("file:iconos\\import.png"));
+                this.btnEstadisticas.setImage(new Image("file:iconos\\business-report.png"));
+                this.btnModoJuego.setImage(new Image("file:iconos\\computer-game.png"));
+    }
+    public void showNotfound(){
+        if (wordsListContainer.getItems().isEmpty()){
+            wordsListContainer.getItems().add("Word not found :(");
         }
         
     }
-    public static void prepareComponents(TextArea tx,ListView<String> s ){
-         tx.clear();
-         s.getItems().clear();
+    public  void prepareComponents(){
+        
+         this.labelMeaning.setText(null);
+         this.labelPalabra.setText(null);
+         wordsListContainer.getItems().clear();
     }
 }

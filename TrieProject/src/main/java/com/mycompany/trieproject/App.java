@@ -27,7 +27,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         trieApp=loadDictionary("diccionario");
   
-        scene = new Scene(loadFXML("ventanaPrincipal"), 728, 464);
+        scene = new Scene(loadFXML("ventanaPrincipal"), 780, 540);
         stage.setScene(scene);
         stage.show();
         
