@@ -60,47 +60,89 @@ public class VentanaPrincipalController implements Initializable {
       
         
                 searchBar.setOnKeyTyped(eh->{
+                this.meaningChart.clear();
                 if (!this.bAproximada.isSelected() && !this.bPosfijo.isSelected()){
-                    List<String> lpalabras=new ArrayList<>();
-                    lpalabras=App.trieApp.getPossibleWord(searchBar.getText());
-                    wordsListContainer.getItems().clear();
+                    List<String> lpalabras=App.trieApp.getPossibleWord(searchBar.getText());
+                    prepareComponents(meaningChart, wordsListContainer);
                     wordsListContainer.getItems().addAll(lpalabras);
+                    showNotfound(wordsListContainer);
+                   
                 }else if (this.bPosfijo.isSelected()){
                     //como se comporta cuando hacer busqueda externa
                     //cual es mi lista de nuevas posibles palabra?
-                    List<String> lpalabras=new ArrayList<>();
-                    lpalabras=App.trieApp.getWordsEndWith(searchBar.getText());
-                    wordsListContainer.getItems().clear();
+                    List<String> lpalabras=App.trieApp.getWordsEndWith(searchBar.getText());
+                    prepareComponents(meaningChart, wordsListContainer);
                     wordsListContainer.getItems().addAll(lpalabras);
+                    showNotfound(wordsListContainer);
                 }
                 else if (this.bAproximada.isSelected()){
-                   //realiza busqueda aproximada 
-                   //me devuelve las palbras de busqueda aproximada
+                   List<String> lpalabras=App.trieApp.getSimilarWords(searchBar.getText());
+                    prepareComponents(meaningChart, wordsListContainer);
+                    wordsListContainer.getItems().addAll(lpalabras);
+                    showNotfound(wordsListContainer);
                     
                 }
-                
-           
+                 
                  });
                 
                 this.bPosfijo.setOnAction(eh->{
-                    this.bAproximada.setSelected(false);
-                    this.searchBar.clear();
-                    this.wordsListContainer.getItems().clear();
+                    if (bPosfijo.isSelected()){
+                        this.bAproximada.setSelected(false);
+                        prepareComponents(meaningChart, wordsListContainer);
+                         List<String> lpalabras=App.trieApp.getWordsEndWith(searchBar.getText());
+                         wordsListContainer.getItems().addAll(lpalabras); 
+                         showNotfound(wordsListContainer);
+                         
+                    }
+                    else if (!bAproximada.isSelected() && !bPosfijo.isSelected()){
+                         this.bAproximada.setSelected(false);
+                         prepareComponents(meaningChart, wordsListContainer);
+                         List<String> lpalabras=App.trieApp.getPossibleWord(searchBar.getText());
+                         wordsListContainer.getItems().addAll(lpalabras); 
+                         showNotfound(wordsListContainer);
+                        
+                    }
+                   
                 });
                 this.bAproximada.setOnAction(eh->{
-                    this.bPosfijo.setSelected(false);
-                    this.searchBar.clear();
-                    this.wordsListContainer.getItems().clear();
+                    if (bAproximada.isSelected()){
+                        this.bPosfijo.setSelected(false);
+                        prepareComponents(meaningChart, wordsListContainer);
+                    List<String> lpalabras=App.trieApp.getSimilarWords(searchBar.getText());
+                    wordsListContainer.getItems().addAll(lpalabras);
+                    showNotfound(wordsListContainer);
+                    
+                    }  else if (!bAproximada.isSelected() && !bPosfijo.isSelected()){
+                         this.bAproximada.setSelected(false);
+                         prepareComponents(meaningChart, wordsListContainer);
+                         List<String> lpalabras=App.trieApp.getPossibleWord(searchBar.getText());
+                         wordsListContainer.getItems().addAll(lpalabras);
+                         showNotfound(wordsListContainer);
+                          
+                    }
+                    
                 });
                  
         wordsListContainer.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>(){
             
             @Override
             public void changed(ObservableValue<? extends String> ov, String t, String t1) {
-              palabraActual=wordsListContainer.getSelectionModel().getSelectedItem();
-
+              
+             
+              if (wordsListContainer.getSelectionModel().getSelectedItem()!=null){
+                 palabraActual=wordsListContainer.getSelectionModel().getSelectedItem();
+                 if (bAproximada.isSelected()){
+                     palabraActual=palabraActual.substring(1);
+                 }
+                 else if (bPosfijo.isSelected()){
+                     palabraActual=palabraActual.substring(1);
+                 }
               meaning=App.trieApp.getMeaningFromWord(palabraActual);
               meaningChart.setText(meaning);
+              }
+             
+             
+
                 
               
               
@@ -110,5 +152,14 @@ public class VentanaPrincipalController implements Initializable {
         });
     
     }    
-    
+    public static void showNotfound(ListView<String> s){
+        if (s.getItems().isEmpty()){
+            s.getItems().add("Word not found :(");
+        }
+        
+    }
+    public static void prepareComponents(TextArea tx,ListView<String> s ){
+         tx.clear();
+         s.getItems().clear();
+    }
 }
