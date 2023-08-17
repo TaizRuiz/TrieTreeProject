@@ -171,7 +171,22 @@ public class Trie<E> {
 
         return res;
     }
-			
+     public List<String> getWordsEndWith(String s){
+       s=s.toLowerCase().strip();
+       List<String> allWords=this.getAllWordsFromTrie();
+       List<String> resultWords=new ArrayList<>();
+       int lengthPosfijo=s.length();
+       for (String sW: allWords){
+           if (sW.length()>= lengthPosfijo){
+              //si la palabra es mas grande o igual de grande vale la pena buscar
+              String comparador=sW.substring(sW.length()-lengthPosfijo);
+              if (comparador.equals(s)){
+                  resultWords.add(sW);
+              }
+           }
+       }
+       return resultWords;
+    }
     public List<String> getPossibleWord(String s){
         List<String> res = new ArrayList<String>(); 
         if (s!=null && !s.isEmpty() && !s.isBlank()){
@@ -243,7 +258,7 @@ public class Trie<E> {
         TrieNode nodoHijo =nodo.getHijos()[index];
        
         if(nodoHijo == nodoFinalPalabra && nodoHijo.isIsFinalChar()==true){
-            System.out.println("entro al if");
+    
             //tiene hijos?
             if(nodoHijo.hasChildren()){
                 nodoHijo.setIsFinalChar(false);

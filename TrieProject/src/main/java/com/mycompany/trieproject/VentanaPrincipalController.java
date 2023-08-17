@@ -18,6 +18,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 
 /**
  * FXML Controller class
@@ -49,6 +50,7 @@ public class VentanaPrincipalController implements Initializable {
     private List<String> palabras;
     String palabraActual=null;
     String meaning=null;
+    
    
     /**
      * Initializes the controller class.
@@ -56,13 +58,41 @@ public class VentanaPrincipalController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
       
-     
-        searchBar.setOnKeyTyped(eh->{
-            List<String> lpalabras=App.trieApp.getPossibleWord(searchBar.getText());
-            wordsListContainer.getItems().clear();
-            wordsListContainer.getItems().addAll(lpalabras);
-        });
         
+                searchBar.setOnKeyTyped(eh->{
+                if (!this.bAproximada.isSelected() && !this.bPosfijo.isSelected()){
+                    List<String> lpalabras=new ArrayList<>();
+                    lpalabras=App.trieApp.getPossibleWord(searchBar.getText());
+                    wordsListContainer.getItems().clear();
+                    wordsListContainer.getItems().addAll(lpalabras);
+                }else if (this.bPosfijo.isSelected()){
+                    //como se comporta cuando hacer busqueda externa
+                    //cual es mi lista de nuevas posibles palabra?
+                    List<String> lpalabras=new ArrayList<>();
+                    lpalabras=App.trieApp.getWordsEndWith(searchBar.getText());
+                    wordsListContainer.getItems().clear();
+                    wordsListContainer.getItems().addAll(lpalabras);
+                }
+                else if (this.bAproximada.isSelected()){
+                   //realiza busqueda aproximada 
+                   //me devuelve las palbras de busqueda aproximada
+                    
+                }
+                
+           
+                 });
+                
+                this.bPosfijo.setOnAction(eh->{
+                    this.bAproximada.setSelected(false);
+                    this.searchBar.clear();
+                    this.wordsListContainer.getItems().clear();
+                });
+                this.bAproximada.setOnAction(eh->{
+                    this.bPosfijo.setSelected(false);
+                    this.searchBar.clear();
+                    this.wordsListContainer.getItems().clear();
+                });
+                 
         wordsListContainer.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>(){
             
             @Override
