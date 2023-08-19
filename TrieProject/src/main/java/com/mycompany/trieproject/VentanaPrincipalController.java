@@ -232,6 +232,7 @@ public class VentanaPrincipalController implements Initializable {
         
          this.labelMeaning.setText(null);
          this.labelPalabra.setText(null);
+         this.eliminarLabel.setText(null);
          wordsListContainer.getItems().clear();
     }
     
@@ -244,8 +245,11 @@ public class VentanaPrincipalController implements Initializable {
       this.prepareComponents();
     }    
     
+    @FXML
     public void borrarPalabra(){
         App.trieApp.delete(searchBar.getText());
+        System.out.println("Se ha eliminado: " + searchBar.getText());
+        App.trieApp.print();
         this.prepareComponents();
     }
 }

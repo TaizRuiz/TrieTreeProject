@@ -210,6 +210,9 @@ public class Trie<E> {
             if (prefixIncluded(s)){
                 helper(getCommonNode(s),res,s.substring(0,s.length()-1));
             }
+            else if(this.containsWord(s)){
+                res.add(s);
+            }
             
           
         }
