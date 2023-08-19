@@ -13,16 +13,21 @@
    <children>
       <TextField fx:id="searchBar" layoutX="125.0" layoutY="43.0" prefHeight="30.0" prefWidth="222.0" promptText="search" />
       <ListView fx:id="wordsListContainer" layoutX="125.0" layoutY="73.0" prefHeight="395.0" prefWidth="222.0" />
-      <VBox layoutX="2.0" layoutY="37.0" prefHeight="467.0" prefWidth="114.0" spacing="15.0">
+      <VBox layoutX="2.0" layoutY="37.0" prefHeight="467.0" prefWidth="114.0" spacing="8.0">
          <children>
             <ImageView fx:id="searchIcon" fitHeight="44.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true" />
             <RadioButton fx:id="bPosfijo" mnemonicParsing="false" prefHeight="18.0" prefWidth="65.0" text="Posfijo" />
             <RadioButton fx:id="bAproximada" mnemonicParsing="false" prefHeight="18.0" prefWidth="85.0" text="Aprox" />
-            <ImageView fx:id="btnAdd" fitHeight="44.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true" />
-            <ImageView fx:id="btnDelete" fitHeight="44.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="btnAdd" fitHeight="44.0" fitWidth="48.0" onMousePressed="#anadirPalabra" pickOnBounds="true" preserveRatio="true" />
+            <Label text="Añadir palabra" />
+            <ImageView fx:id="btnDelete" fitHeight="44.0" fitWidth="48.0" onMousePressed="#borrarPalabra" pickOnBounds="true" preserveRatio="true" />
+            <Label text="Eliminar palabra" />
             <ImageView fx:id="btnExport" fitHeight="44.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true" />
+            <Label text="Guardar diccionario" />
             <ImageView fx:id="btnImport" fitHeight="44.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true" />
+            <Label text="Cargar diccionario" />
             <ImageView fx:id="btnEstadisticas" fitHeight="44.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true" />
+            <Label text="Estadísticas de tu diccionario" />
             <ImageView fx:id="btnModoJuego" fitHeight="44.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
                <VBox.margin>
                   <Insets />
@@ -37,6 +42,7 @@
          <children>
             <Label fx:id="labelPalabra" layoutX="47.0" layoutY="94.0" text="sustantivo" />
             <Label fx:id="labelMeaning" layoutX="45.0" layoutY="133.0" text="Significado" />
+            <Label fx:id="eliminarLabel" layoutX="47.0" layoutY="234.0" text="Elimina la palabra en el icono eliminar" />
          </children>
       </AnchorPane>
    </children>

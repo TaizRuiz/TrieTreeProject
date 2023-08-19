@@ -13,6 +13,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -62,8 +63,10 @@ public class VentanaPrincipalController implements Initializable {
     private Label labelPalabra;
     @FXML
     private Label labelMeaning;
+    @FXML
+    private Label eliminarLabel;
+
     
-   
     /**
      * Initializes the controller class.
      */
@@ -74,6 +77,7 @@ public class VentanaPrincipalController implements Initializable {
                 searchBar.setOnKeyTyped(eh->{
                 this.labelMeaning.setText(null);
                 this.labelPalabra.setText(null);
+                this.eliminarLabel.setText(null);
                 if (!this.bAproximada.isSelected() && !this.bPosfijo.isSelected()){
                     List<String> lpalabras=App.trieApp.getPossibleWord(searchBar.getText());
                     prepareComponents();
@@ -150,20 +154,21 @@ public class VentanaPrincipalController implements Initializable {
                  else if (bPosfijo.isSelected()){
                      palabraActual=palabraActual.substring(1);
                  }
-              meaning=App.trieApp.getMeaningFromWord(palabraActual);
-                  showWordMeaning(palabraActual, meaning);
+                meaning=App.trieApp.getMeaningFromWord(palabraActual);
+                showWordMeaning(palabraActual, meaning);
+                
               }
+              
+              
              
              
 
-                
-              
               
             }
             
             
         });
-    
+
     }
     public void setTextStyle(){
         this.labelMeaning.setStyle(
@@ -174,16 +179,41 @@ public class VentanaPrincipalController implements Initializable {
                 + "-fx-font-style: bold;"+
                 "-fx-font-style:italic;"
         );
+         
+        this.eliminarLabel.setStyle("-fx-text-fill: red; -fx-padding: 5px 10px;");
     }
     public void showWordMeaning(String pal,String meaning){
         this.labelPalabra.setText(pal);
         this.labelMeaning.setText(meaning);
+        this.eliminarLabel.setText("Si desea eliminar la palabra de click al icono eliminar");
        
     }
     public void initializeicons(){
                 this.searchIcon.setImage(new Image("file:iconos\\search.png"));
                 this.btnAdd.setImage(new Image("file:iconos\\add.png"));
+                // Cambiar el cursor cuando el mouse entra en el ImageView
+                btnAdd.setOnMouseEntered(event -> {
+                    btnAdd.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);");
+                    btnAdd.setCursor(Cursor.HAND);
+                });
+
+                // Restaurar el cursor cuando el mouse sale del ImageView
+                btnAdd.setOnMouseExited(event -> {
+                    btnAdd.setStyle("-fx-effect: none;");
+                    btnAdd.setCursor(Cursor.DEFAULT);
+                });
                 this.btnDelete.setImage(new Image("file:iconos\\delete.png"));
+                // Cambiar el cursor cuando el mouse entra en el ImageView
+                btnDelete.setOnMouseEntered(event -> {
+                    btnDelete.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);");
+                    btnDelete.setCursor(Cursor.HAND);
+                });
+
+                // Restaurar el cursor cuando el mouse sale del ImageView
+                btnDelete.setOnMouseExited(event -> {
+                    btnDelete.setStyle("-fx-effect: none;");
+                    btnDelete.setCursor(Cursor.DEFAULT);
+                });
                 this.btnExport.setImage(new Image("file:iconos\\export.png"));
                 this.btnImport.setImage(new Image("file:iconos\\import.png"));
                 this.btnEstadisticas.setImage(new Image("file:iconos\\business-report.png"));
@@ -192,6 +222,9 @@ public class VentanaPrincipalController implements Initializable {
     public void showNotfound(){
         if (wordsListContainer.getItems().isEmpty()){
             wordsListContainer.getItems().add("Word not found :(");
+
+            meaning= "Añada la palabra a su diccionario";
+            showWordMeaning("No se ha encontrado", meaning);
         }
         
     }
@@ -200,5 +233,19 @@ public class VentanaPrincipalController implements Initializable {
          this.labelMeaning.setText(null);
          this.labelPalabra.setText(null);
          wordsListContainer.getItems().clear();
+    }
+    
+    @FXML
+    public void anadirPalabra(){
+        App.trieApp.insert(searchBar.getText());
+        System.out.println("Se ha anadido: " + searchBar.getText());
+        App.trieApp.print();
+      //Falta cuando quiera anadir significado
+      this.prepareComponents();
+    }    
+    
+    public void borrarPalabra(){
+        App.trieApp.delete(searchBar.getText());
+        this.prepareComponents();
     }
 }
