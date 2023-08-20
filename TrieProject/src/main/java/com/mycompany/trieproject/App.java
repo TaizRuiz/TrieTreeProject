@@ -20,22 +20,26 @@ import java.util.List;
  * JavaFX App
  */
 public class App extends Application {
-
+    public static String rutaApertura="src\\main\\java\\archivos\\diccionario.txt";
+    public static String rutaActual=null;
     private static Scene scene;
     public static Trie trieApp;
     @Override
     public void start(Stage stage) throws IOException {
-        trieApp=loadDictionary("diccionario");
+       
+        trieApp=loadDictionary(rutaApertura); 
+     
   
         scene = new Scene(loadFXML("ventanaPrincipal"), 780, 540);
         stage.setScene(scene);
         stage.show();
-        
+        scene.getWindow().setOnCloseRequest(eh->{
+            System.out.println("saving");
+            VentanaPrincipalController.save();
+        });
         trieApp.print();
         
-        System.out.println(trieApp.getMeaningFromWord("casa"));
-        System.out.println(trieApp.getMeaningFromWord("casadora"));
-        System.out.println(trieApp.getPossibleWord("c"));
+        
     }
 
     static void setRoot(String fxml) throws IOException {
@@ -51,19 +55,51 @@ public class App extends Application {
         launch();
     }
     
-    public static Trie<Character> loadDictionary(String nomArchivo){
+    public static Trie<Character> loadDictionary(String rutaArch){
         
         Trie<Character> arbolDict=new Trie();
-        if (nomArchivo!=null){
+        if (rutaArch!=null){
             
-            String ruta="src\\main\\java\\archivos\\"+nomArchivo+".txt";
+            String ruta=rutaArch;
             try(BufferedReader br=new BufferedReader(new FileReader(ruta))){
                 String s=br.readLine();
+                System.out.println("primera"+s);
                 //me desago del headline
                 while (s!=null){
+                    System.out.println("entro al while");
+                    System.out.println(s);
+                    String[] datos=s.split(";");
+                    String palabra=datos[0].substring(1);
+                    String significado=datos[1];
+                    System.out.println(palabra.length());
+                    System.out.println(significado.length());
+                    arbolDict.insert(palabra, significado);
+                    s=br.readLine();
+                }
+            }catch(Exception e){
+                System.out.println(e);
+            }
+        }
+        return arbolDict;
+    }
+     public static Trie<Character> loadDictionaryFromImport(String rutaArch){
+        
+        Trie<Character> arbolDict=new Trie();
+        if (rutaArch!=null){
+            
+            String ruta=rutaArch;
+            try(BufferedReader br=new BufferedReader(new FileReader(ruta))){
+                String s=br.readLine();
+                System.out.println("primera"+s);
+                //me desago del headline
+                while (s!=null){
+                    System.out.println("entro al while");
+                    System.out.println(s);
                     String[] datos=s.split(";");
                     String palabra=datos[0];
                     String significado=datos[1];
+                    System.out.println(palabra.length());
+                    System.out.println(significado.length());
                     arbolDict.insert(palabra, significado);
                     s=br.readLine();
                 }
@@ -78,7 +114,7 @@ public class App extends Application {
         
         if(nomArchivo != null){
             try {
-                FileWriter archivo = new FileWriter("src\\main\\java\\archivos\\"+nomArchivo+".txt");
+                FileWriter archivo = new FileWriter(nomArchivo);
                 BufferedWriter escritor = new BufferedWriter(archivo);
                 
                 //Consigo la lista

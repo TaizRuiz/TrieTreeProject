@@ -7,6 +7,7 @@ package com.mycompany.trieproject.Trie;
 import static java.lang.Integer.min;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.scene.Node;
 
 /**
  *
@@ -24,6 +25,7 @@ public class Trie<E> {
     public boolean insert(String p, String m){
          if (p!=null ){
         //&& (!this.containsWord(p)
+           
            p=p.toLowerCase();
            char[] chars=p.toCharArray();
            TrieNode<E> actual=this.root;
@@ -61,7 +63,7 @@ public class Trie<E> {
     public boolean containsWord(String s){
         boolean contains=true;
         if (s!=null){
-            
+           
            s=s.toLowerCase();
            
            char[] chars=s.toCharArray();
@@ -81,6 +83,10 @@ public class Trie<E> {
                 }else{
                       contains=false;
                     }
+                
+                if (!actual.hasChildren() && actual.isIsFinalChar()==false){
+                    contains=false;
+                }
                     
            }else{
                    break;
@@ -267,6 +273,7 @@ public class Trie<E> {
   
          TrieNode nodoFinal=getEndWord(s);
          nodoFinal.setIsFinalChar(false);
+         nodoFinal.setMeaning(null);
     }
     
     private void deleteNodePrefix(TrieNode nodo, TrieNode nodoFinalPalabra, String eliminar){ 
@@ -282,6 +289,7 @@ public class Trie<E> {
             //tiene hijos?
             if(nodoHijo.hasChildren()){
                 nodoHijo.setIsFinalChar(false);
+                nodoHijo.setMeaning(null);
             }
             
             else{

@@ -1,5 +1,0 @@
-casa;lugar
-casada;estado civil
-casador;persona
-casadora;femenino
-caseta;null
