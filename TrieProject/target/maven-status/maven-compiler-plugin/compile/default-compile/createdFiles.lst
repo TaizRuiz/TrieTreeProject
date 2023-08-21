@@ -4,3 +4,5 @@ com\mycompany\trieproject\VentanaPrincipalController.class
 module-info.class
 com\mycompany\trieproject\Trie\Trie.class
 com\mycompany\trieproject\Trie\TrieNode.class
+com\mycompany\trieproject\GraphicController.class
+com\mycompany\trieproject\Prueba.class
