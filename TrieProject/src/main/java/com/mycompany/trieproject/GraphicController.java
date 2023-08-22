@@ -4,14 +4,24 @@
  */
 package com.mycompany.trieproject;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.TreeMap;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -24,6 +34,12 @@ public class GraphicController implements Initializable {
     BarChart<?, ?> grafica;
     @FXML
     Label txtTotal;
+    @FXML
+    private CategoryAxis ejeX;
+    @FXML
+    private NumberAxis ejeY;
+    @FXML
+    private Button histogramaBoton;
 
     /**
      * Initializes the controller class.
@@ -37,38 +53,99 @@ public class GraphicController implements Initializable {
     @FXML
     public void setValues() {
         int numberOfWords = App.trieApp.getNumberOfWords();
+
         txtTotal.setText(String.valueOf(numberOfWords));
-        ArrayList<Integer> cantidadPorLetra = cantidadPorLetra();
-        System.out.println(cantidadPorLetra);
+
+        TreeMap<String, Integer> cantidadPorLetra = cantidadPorLetra();
+
+        TreeMap<String, Integer> repeticiones = repeticionLetras();
+        System.out.println(repeticiones);
+
+        XYChart.Series set1 = new XYChart.Series<>();
+        set1.setName("Cantidad de palabras");
+        for (String letra : cantidadPorLetra.keySet()) {
+            set1.getData().add(new XYChart.Data(letra, cantidadPorLetra.get(letra)));
+        }
+
+        XYChart.Series set2 = new XYChart.Series<>();
+        set2.setName("Repeticion de letra");
+        for (String letra : repeticiones.keySet()) {
+            set2.getData().add(new XYChart.Data(letra, repeticiones.get(letra)));
+        }
+
+        grafica.getData().addAll(set1, set2);
 
     }
 
-    public ArrayList<Integer> cantidadPorLetra() {
-        String abecedario[] = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"};
-        System.out.println(abecedario.length);
-        ArrayList<Integer> cantidades = new ArrayList<>();
+    public TreeMap<String, Integer> repeticionLetras() {
+        TreeMap<String, Integer> repeticiones = new TreeMap<>();
+
+        for (int i = 0; i < 26; i++) {
+            char ch = (char) ('a' + i);
+            String letra = String.valueOf(ch);
+            repeticiones.put(letra, 0);
+        }
+
         List<String> palabras = App.trieApp.getAllWordsFromTrie();
 
-        for (int i = 0; i < 25; i++) {
+        for (String letra : repeticiones.keySet()) {
             int contador = 0;
             for (String s : palabras) {
-                String letra = s.substring(0,2);
-                if (letra.equals(abecedario[i])) {
-                    contador++;
+                for (int i = 0; i < s.length(); i++) {
+                    char c = s.charAt(i);
+                    String l = String.valueOf(c);
+                    if (l.equals(letra)) {
+                        contador++;
+                        repeticiones.put(l, contador);
+                    }
                 }
             }
-            cantidades.add(contador);
 
+        }
+        return repeticiones;
+    }
+
+    public TreeMap<String, Integer> cantidadPorLetra() {
+        TreeMap<String, Integer> cantidades = new TreeMap<>();
+
+        for (int i = 0; i < 26; i++) {
+            char ch = (char) ('a' + i);
+            String letra = String.valueOf(ch);
+            cantidades.put(letra, 0);
+        }
+        List<String> palabras = App.trieApp.getAllWordsFromTrie();
+
+        for (String letra : cantidades.keySet()) {
+            int contador = 0;
+            for (String s : palabras) {
+                String primeraLetra = s.substring(1, 2);
+                if (primeraLetra.equals(letra)) {
+                    contador++;
+                    cantidades.put(letra, contador);
+                }
+            }
         }
 
         return cantidades;
     }
+    
+    @FXML
+    private void cambiarAVentana() {
+        try {
+            // Cargar el nuevo archivo FXML
+            Parent nuevaVentana = FXMLLoader.load(getClass().getResource("/fxml/Histograma.fxml"));
 
-    public ArrayList<Integer> longitudes() {
-        ArrayList<Integer> longitudes = new ArrayList<>();
+            // Crear una nueva escena
+            Scene scene = new Scene(nuevaVentana);
 
-        return longitudes;
+            // Obtener el Stage actual
+            Stage stage = (Stage) histogramaBoton.getScene().getWindow();
+
+            // Establecer la nueva escena en el Stage
+            stage.setScene(scene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    //int totalPalabras, ArrayList<Integer> cantidadPorLetra, ArrayList<Integer> longitudes
 }
