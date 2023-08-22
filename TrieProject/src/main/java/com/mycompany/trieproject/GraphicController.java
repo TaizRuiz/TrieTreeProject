@@ -4,18 +4,24 @@
  */
 package com.mycompany.trieproject;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -32,6 +38,8 @@ public class GraphicController implements Initializable {
     private CategoryAxis ejeX;
     @FXML
     private NumberAxis ejeY;
+    @FXML
+    private Button histogramaBoton;
 
     /**
      * Initializes the controller class.
@@ -119,6 +127,25 @@ public class GraphicController implements Initializable {
         }
 
         return cantidades;
+    }
+    
+    @FXML
+    private void cambiarAVentana() {
+        try {
+            // Cargar el nuevo archivo FXML
+            Parent nuevaVentana = FXMLLoader.load(getClass().getResource("/fxml/Histograma.fxml"));
+
+            // Crear una nueva escena
+            Scene scene = new Scene(nuevaVentana);
+
+            // Obtener el Stage actual
+            Stage stage = (Stage) histogramaBoton.getScene().getWindow();
+
+            // Establecer la nueva escena en el Stage
+            stage.setScene(scene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
