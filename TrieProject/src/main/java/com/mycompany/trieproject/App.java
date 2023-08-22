@@ -125,7 +125,35 @@ public class App extends Application {
 
                     //Comienza la palabra desde el indice 1 porque el 0 es espacio
                     String significado = dictionary.getMeaningFromWord(palabra.substring(1));
-                    escritor.write(palabra + ";" + significado);
+                    escritor.write(palabra.toString() + ";" + significado.toString());
+                    escritor.write("\n");
+                    escritor.flush();
+                }
+                escritor.close();
+                
+                return true;
+            } catch (IOException ex) {
+                System.out.println(ex);
+            }
+        }
+        return false;
+    }
+     public static boolean saveDictionarytoImport(String nomArchivo, Trie dictionary){
+        
+        if(nomArchivo != null){
+            try {
+                FileWriter archivo = new FileWriter(nomArchivo);
+                BufferedWriter escritor = new BufferedWriter(archivo);
+                
+                //Consigo la lista
+                List<String> dictionaryWords = dictionary.getAllWordsFromTrie();
+    
+                //Iterando cada palabra con su significado
+                for(String palabra: dictionaryWords){
+
+                    //Comienza la palabra desde el indice 1 porque el 0 es espacio
+                    String significado = dictionary.getMeaningFromWord(palabra.substring(1));
+                    escritor.write(palabra.substring(1).toString() + ";" + significado.toString());
                     escritor.write("\n");
                     escritor.flush();
                 }

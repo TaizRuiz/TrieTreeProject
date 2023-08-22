@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -31,6 +33,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -87,6 +90,8 @@ public class VentanaPrincipalController implements Initializable {
     private Button tipStatistics;
     @FXML
     private Button tipGame;
+    @FXML
+    private TextField labelNom;
 
     /**
      * Initializes the controller class.
@@ -181,6 +186,24 @@ public class VentanaPrincipalController implements Initializable {
             }
 
         });
+        this.btnModoJuego.setOnMouseClicked(eh->{
+              try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/mycompany/trieproject/modoJuego.fxml"));
+                Parent root = loader.load();
+
+                Scene scene = new Scene(root);
+                Stage stage = new Stage();
+
+                stage.setScene(scene);
+                stage.showAndWait();
+
+                
+
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+
+        });
 
         wordsListContainer.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
 
@@ -202,6 +225,9 @@ public class VentanaPrincipalController implements Initializable {
             }
 
         });
+        this.btnExport.setOnMouseClicked(eh-> {
+            exportDictionary(eh);
+        });
         this.btnImport.setOnMouseClicked(eh -> {
             System.out.println("clickeado");
             FileChooser fileChooser = new FileChooser();
@@ -212,7 +238,6 @@ public class VentanaPrincipalController implements Initializable {
                 App.rutaActual = ruta;
                 System.out.println("ruta seleccionada:" + ruta);
                 App.trieApp = App.loadDictionaryFromImport(ruta);
-
                 App.trieApp.print();
                 try {
                     App.setRoot("ventanaPrincipal");
@@ -383,16 +408,52 @@ public class VentanaPrincipalController implements Initializable {
         a.setContentText(contexto);
         a.showAndWait();
     }
+     public void showConfirmationAlarm(String contexto) {
+        Alert a = new Alert(Alert.AlertType.CONFIRMATION);
+        a.setContentText(contexto);
+        a.showAndWait();
+    }
 
-    public void exportDictionary() {
+    public void exportDictionary(Event e)  {
         //metodo que exportar el archivo txt a un directorio
+         DirectoryChooser directoryChooser = new DirectoryChooser();
+                if (this.labelNom!=null){
+                    if (this.labelNom.getText()!=null && !this.labelNom.getText().isEmpty() && !this.labelNom.getText().isBlank() ){
+                         directoryChooser.setTitle("Seleccionar carpeta");
+                         File selectedDirectory = directoryChooser.showDialog(null);
+                        if (selectedDirectory != null) {
+                            String ruta=selectedDirectory.getAbsolutePath()+"\\";
+                           System.out.println(ruta);
+                             String nomProyecto=this.labelNom.getText();
+                             String rutaExport=ruta+ nomProyecto+".txt";
+                             App.saveDictionarytoImport(rutaExport, App.trieApp);
+                             showConfirmationAlarm("se exporto con exito :)");
+                             this.labelMeaning.setText(null);
+                             try {
+                                 App.setRoot("ventanaPrincipal");
+                             } catch (IOException ex) {
+                                 ex.printStackTrace();
+                             }
+                        } else {
+                            e.consume();
+                            System.out.println("Ninguna carpeta seleccionada.");
+                        } 
+                    }else{
+                        showAlarm("Nombre su proyecto");
+                    }
+
+                }else {
+                    
+                    e.consume();
+                }
+                
     }
 
     public static void save() {
 
         App.saveDictionary(App.rutaApertura, App.trieApp);
         if (App.rutaActual != null) {
-            App.saveDictionary(App.rutaActual, App.trieApp);
+            App.saveDictionarytoImport(App.rutaActual,App.trieApp);
         }
     }
 
