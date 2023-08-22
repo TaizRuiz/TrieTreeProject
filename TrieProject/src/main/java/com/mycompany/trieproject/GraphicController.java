@@ -45,19 +45,56 @@ public class GraphicController implements Initializable {
     @FXML
     public void setValues() {
         int numberOfWords = App.trieApp.getNumberOfWords();
-        
+
         txtTotal.setText(String.valueOf(numberOfWords));
-        
+
         TreeMap<String, Integer> cantidadPorLetra = cantidadPorLetra();
- 
+
+        TreeMap<String, Integer> repeticiones = repeticionLetras();
+        System.out.println(repeticiones);
+
         XYChart.Series set1 = new XYChart.Series<>();
         set1.setName("Cantidad de palabras");
         for (String letra : cantidadPorLetra.keySet()) {
             set1.getData().add(new XYChart.Data(letra, cantidadPorLetra.get(letra)));
         }
 
-        grafica.getData().addAll(set1);
+        XYChart.Series set2 = new XYChart.Series<>();
+        set2.setName("Repeticion de letra");
+        for (String letra : repeticiones.keySet()) {
+            set2.getData().add(new XYChart.Data(letra, repeticiones.get(letra)));
+        }
 
+        grafica.getData().addAll(set1, set2);
+
+    }
+
+    public TreeMap<String, Integer> repeticionLetras() {
+        TreeMap<String, Integer> repeticiones = new TreeMap<>();
+
+        for (int i = 0; i < 26; i++) {
+            char ch = (char) ('a' + i);
+            String letra = String.valueOf(ch);
+            repeticiones.put(letra, 0);
+        }
+
+        List<String> palabras = App.trieApp.getAllWordsFromTrie();
+
+        for (String letra : repeticiones.keySet()) {
+            int contador = 0;
+            for (String s : palabras) {
+                for (int i = 0; i < s.length(); i++) {
+                    char c = s.charAt(i);
+                    String l = String.valueOf(c);
+                    if (l.equals(letra)) {
+                        contador++;
+                        repeticiones.put(l, contador);
+                    }
+                }
+            }
+
+        }
+        return repeticiones;
     }
 
     public TreeMap<String, Integer> cantidadPorLetra() {
@@ -83,6 +120,5 @@ public class GraphicController implements Initializable {
 
         return cantidades;
     }
-
 
 }
