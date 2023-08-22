@@ -8,9 +8,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.TreeMap;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 
 /**
@@ -24,6 +28,10 @@ public class GraphicController implements Initializable {
     BarChart<?, ?> grafica;
     @FXML
     Label txtTotal;
+    @FXML
+    private CategoryAxis ejeX;
+    @FXML
+    private NumberAxis ejeY;
 
     /**
      * Initializes the controller class.
@@ -37,38 +45,44 @@ public class GraphicController implements Initializable {
     @FXML
     public void setValues() {
         int numberOfWords = App.trieApp.getNumberOfWords();
+        
         txtTotal.setText(String.valueOf(numberOfWords));
-        ArrayList<Integer> cantidadPorLetra = cantidadPorLetra();
-        System.out.println(cantidadPorLetra);
+        
+        TreeMap<String, Integer> cantidadPorLetra = cantidadPorLetra();
+ 
+        XYChart.Series set1 = new XYChart.Series<>();
+        set1.setName("Cantidad de palabras");
+        for (String letra : cantidadPorLetra.keySet()) {
+            set1.getData().add(new XYChart.Data(letra, cantidadPorLetra.get(letra)));
+        }
+
+        grafica.getData().addAll(set1);
 
     }
 
-    public ArrayList<Integer> cantidadPorLetra() {
-        String abecedario[] = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"};
-        System.out.println(abecedario.length);
-        ArrayList<Integer> cantidades = new ArrayList<>();
+    public TreeMap<String, Integer> cantidadPorLetra() {
+        TreeMap<String, Integer> cantidades = new TreeMap<>();
+
+        for (int i = 0; i < 26; i++) {
+            char ch = (char) ('a' + i);
+            String letra = String.valueOf(ch);
+            cantidades.put(letra, 0);
+        }
         List<String> palabras = App.trieApp.getAllWordsFromTrie();
 
-        for (int i = 0; i < 25; i++) {
+        for (String letra : cantidades.keySet()) {
             int contador = 0;
             for (String s : palabras) {
-                String letra = s.substring(0,2);
-                if (letra.equals(abecedario[i])) {
+                String primeraLetra = s.substring(1, 2);
+                if (primeraLetra.equals(letra)) {
                     contador++;
+                    cantidades.put(letra, contador);
                 }
             }
-            cantidades.add(contador);
-
         }
 
         return cantidades;
     }
 
-    public ArrayList<Integer> longitudes() {
-        ArrayList<Integer> longitudes = new ArrayList<>();
 
-        return longitudes;
-    }
-
-    //int totalPalabras, ArrayList<Integer> cantidadPorLetra, ArrayList<Integer> longitudes
 }

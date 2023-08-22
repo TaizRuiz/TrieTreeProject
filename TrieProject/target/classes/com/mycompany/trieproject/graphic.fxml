@@ -13,10 +13,10 @@
          <children>
             <BarChart fx:id="grafica" title="Estadísticas del diccionario">
               <xAxis>
-                <CategoryAxis side="BOTTOM" />
+                <CategoryAxis fx:id="ejeX" label="Letras" side="BOTTOM" />
               </xAxis>
               <yAxis>
-                <NumberAxis side="LEFT" />
+                <NumberAxis fx:id="ejeY" label="Cantidad" side="LEFT" />
               </yAxis>
             </BarChart>
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
