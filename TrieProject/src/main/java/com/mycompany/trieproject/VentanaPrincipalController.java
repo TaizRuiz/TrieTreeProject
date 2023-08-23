@@ -94,6 +94,7 @@ public class VentanaPrincipalController implements Initializable {
     private Button tipGame;
     @FXML
     private TextField labelNom;
+    
 
     /**
      * Initializes the controller class.

@@ -6,6 +6,5 @@ com\mycompany\trieproject\Prueba.class
 com\mycompany\trieproject\App.class
 com\mycompany\trieproject\VentanaPrincipalController$1.class
 module-info.class
-.netbeans_automatic_build
 com\mycompany\trieproject\Trie\TrieNode.class
 com\mycompany\trieproject\GraphicController.class

@@ -3,12 +3,13 @@
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.Glow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="523.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.trieproject.GraphicController">
+<AnchorPane id="AnchorPane" prefHeight="445.0" prefWidth="523.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.trieproject.GraphicController">
    <children>
       <VBox prefHeight="400.0" prefWidth="523.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -22,9 +23,25 @@
             </BarChart>
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <Label layoutX="88.0" layoutY="28.0" prefHeight="43.0" prefWidth="77.0" text="Número total de palabras:" wrapText="true" />
-                  <Label fx:id="txtTotal" layoutX="166.0" layoutY="41.0" prefHeight="17.0" prefWidth="35.0" />
-                  <Button fx:id="histogramaBoton" layoutX="331.0" layoutY="71.0" mnemonicParsing="false" onAction="#cambiarAVentana" text="Ver Histograma de Longitudes" />
+                  <Label layoutX="69.0" layoutY="49.0" prefHeight="43.0" prefWidth="77.0" text="Número total de palabras:" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font name="System Italic" size="12.0" />
+                     </font></Label>
+                  <Label fx:id="txtTotal" alignment="CENTER" contentDisplay="CENTER" layoutX="90.0" layoutY="93.0" prefHeight="17.0" prefWidth="35.0" textAlignment="CENTER">
+                     <font>
+                        <Font size="27.0" />
+                     </font>
+                     <effect>
+                        <Glow />
+                     </effect></Label>
+                  <BarChart fx:id="barchar" layoutX="200.0" layoutY="-1.0" prefHeight="187.0" prefWidth="323.0" title="Histograma de longitudes">
+                    <xAxis>
+                      <CategoryAxis fx:id="axisX" side="BOTTOM" />
+                    </xAxis>
+                    <yAxis>
+                      <NumberAxis fx:id="axisY" side="LEFT" />
+                    </yAxis>
+                  </BarChart>
                </children>
             </AnchorPane>
          </children>

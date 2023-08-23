@@ -7,7 +7,12 @@ package com.mycompany.trieproject;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
 import javafx.fxml.FXML;
@@ -39,7 +44,12 @@ public class GraphicController implements Initializable {
     @FXML
     private NumberAxis ejeY;
     @FXML
-    private Button histogramaBoton;
+    BarChart<?, ?> barchar;
+    @FXML
+    private CategoryAxis axisX;
+
+    @FXML
+    private NumberAxis axisY;
 
     /**
      * Initializes the controller class.
@@ -59,7 +69,6 @@ public class GraphicController implements Initializable {
         TreeMap<String, Integer> cantidadPorLetra = cantidadPorLetra();
 
         TreeMap<String, Integer> repeticiones = repeticionLetras();
-        System.out.println(repeticiones);
 
         XYChart.Series set1 = new XYChart.Series<>();
         set1.setName("Cantidad de palabras");
@@ -74,6 +83,17 @@ public class GraphicController implements Initializable {
         }
 
         grafica.getData().addAll(set1, set2);
+        
+        XYChart.Series chart = new XYChart.Series<>();
+        
+        for(Map.Entry entrada: this.agruparPorLongitud().entrySet()){
+            chart.getData().add(new XYChart.Data<>(entrada.getKey(),entrada.getValue()));
+        }
+        
+        chart.setName("Longitudes");
+        
+        barchar.getData().add(chart);
+        
 
     }
 
@@ -129,23 +149,28 @@ public class GraphicController implements Initializable {
         return cantidades;
     }
     
-    @FXML
-    private void cambiarAVentana() {
-        try {
-            // Cargar el nuevo archivo FXML
-            Parent nuevaVentana = FXMLLoader.load(getClass().getResource("/fxml/Histograma.fxml"));
-
-            // Crear una nueva escena
-            Scene scene = new Scene(nuevaVentana);
-
-            // Obtener el Stage actual
-            Stage stage = (Stage) histogramaBoton.getScene().getWindow();
-
-            // Establecer la nueva escena en el Stage
-            stage.setScene(scene);
-        } catch (IOException e) {
-            e.printStackTrace();
+    public Map<String,Integer> agruparPorLongitud(){
+        Map<String,Integer> mapa = new HashMap<>();
+        List<String> lista = App.trieApp.getAllWordsFromTrie();
+        
+        for(String st: lista){
+            int longitud = st.length();
+            if (longitud >= 1 && longitud <= 15) {
+                mapa.put(String.valueOf(longitud), mapa.getOrDefault(String.valueOf(longitud), 0) + 1);
+            }
         }
+        
+        // Ordenar las claves
+        List<String> clavesOrdenadas = new ArrayList<>(mapa.keySet());
+        Collections.sort(clavesOrdenadas, Comparator.comparingInt(Integer::parseInt));
+
+        // Crear el nuevo mapa ordenado
+        Map<String, Integer> mapaOrdenado = new LinkedHashMap<>();
+        for (String clave : clavesOrdenadas) {
+            mapaOrdenado.put(clave, mapa.get(clave));
+        }
+
+    return mapaOrdenado;
     }
 
 }
