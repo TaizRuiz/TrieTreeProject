@@ -1,0 +1,58 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 22 ago 2023, 19:18:39
+    Author     : USUARIO
+*/
+.AnchorPane{
+    -fx-background-color:#FFFFFF;
+}
+.button{
+/*    -fx-border-color: black;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;*/
+
+    -fx-background-color: linear-gradient(to bottom, #FFD700, #FFA500);
+    -fx-border-color: #ffe4b5;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px; 
+    
+    -fx-font-family: "Impact";
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.button:hover{
+    -fx-background-color: lightgray;
+}
+.TextField{
+    -fx-background-color: linear-gradient(to bottom, #FFD700, #FFA500);
+    -fx-border-color: #ffe4b5;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px; 
+    -fx-font-family: "Impact";
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-color: white;
+    
+    
+}
+
+.TextArea{
+    
+    -fx-font-family: "Arial"; /* fuente texto*/
+    -fx-font-size: 12px;
+    -fx-background-color: #FFFFFF; /* Fondo color */
+    -fx-text-fill: #ac3f3f;        /*colo de las letras*/
+     
+    -fx-border-color: #D2B48C;     /*Color del borde*/
+    -fx-border-width: 2px;         /*Ancho del borde*/
+    -fx-border-radius: 5px;        /*radio del borde*/
+    -fx-background-radius: 5px;    /*radio del fondo que vaya acorde al radio del borde*/
+    -fx-background-insets: 0;   /*margen con el borde esta en 0 ambas estan igualadas*/
+}

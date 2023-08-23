@@ -84,6 +84,8 @@ public class VentanaPrincipalController implements Initializable {
     private Button tipDelete;
     @FXML
     private Button tipExport;
+     @FXML
+    private AnchorPane contenedorPrincipal;
     @FXML
     private Button tipImport;
     @FXML
@@ -98,6 +100,7 @@ public class VentanaPrincipalController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
         startToolTips();
         this.eliminarLabel.setText(null);
         setTextStyle();
@@ -456,6 +459,9 @@ public class VentanaPrincipalController implements Initializable {
             App.saveDictionarytoImport(App.rutaActual,App.trieApp);
         }
     }
+    
+    
+    
 
     public void abrirEstadisticas() {
 

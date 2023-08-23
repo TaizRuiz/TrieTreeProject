@@ -4,7 +4,10 @@
  */
 package com.mycompany.trieproject;
 
+import java.applet.AudioClip;
+import java.io.File;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -29,6 +32,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javax.print.attribute.standard.Media;
 
 /**
  * FXML Controller class
@@ -42,6 +46,7 @@ public class ModoJuegoController implements Initializable {
     /**
      * Initializes the controller class.
      */
+    private int numPalabras=0;
     private int aciertos=0;
     private int tiempo=0;
     @FXML
@@ -61,8 +66,8 @@ public class ModoJuegoController implements Initializable {
     private Button siguiente;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        this.containerPalabra.setAlignment(javafx.geometry.Pos.CENTER);
        this.casillasPalabras.setAlignment(javafx.geometry.Pos.CENTER);
-       String randomWord=generateRandomWord(App.trieApp.getAllWordsFromTrie());
        Timeline tl=new Timeline(new KeyFrame(Duration.seconds(1), e->{
            tiempo++;
            setTimeIcons(tiempo);
@@ -75,17 +80,46 @@ public class ModoJuegoController implements Initializable {
        
         tl.setOnFinished(eh->{
             //pantalla que muestra el resultado
-            System.out.println(aciertos);
+            System.out.println(numPalabras+":"+aciertos);
+          
+            this.casillasPalabras.getChildren().clear();
+            this.wordMeaning.setText(this.aciertos+" / "+this.numPalabras);
+            for (int i=1; i<=this.aciertos;i++){
+                this.generarEstrella();
+            }
+            for (int i=1; i<=this.numPalabras-this.aciertos;i++){
+                this.generarEstrellaFallo();
+            }
+            this.siguiente.setOnAction(e->{
+                e.consume();
+            });
+            
         });
            
       
       
         this.siguiente.setOnAction(eh->{
+           numPalabras++;
            voidVerificar();
            mostarCasillas();
+           
             
         });
      
+    }
+    private void generarEstrellaFallo(){
+        String ruta="file:iconos\\fallo.png";
+        ImageView iv=new ImageView(new Image(ruta));
+        iv.setFitHeight(40);
+        iv.setFitWidth(40);
+        this.casillasPalabras.getChildren().add(iv);
+    }
+    private void generarEstrella(){
+        String ruta="file:iconos\\star.png";
+        ImageView iv=new ImageView(new Image(ruta));
+        iv.setFitHeight(40);
+        iv.setFitWidth(40);
+        this.casillasPalabras.getChildren().add(iv);
     }
     private void voidVerificar(){
         if (casillasPalabras!=null){
@@ -109,6 +143,7 @@ public class ModoJuegoController implements Initializable {
           bloquearEspacios(inte);
       }
         LlenarTexto(s);
+        
       this.wordMeaning.setText(App.trieApp.getMeaningFromWord(s));
           
           
@@ -127,9 +162,19 @@ public class ModoJuegoController implements Initializable {
         ObservableList<Node> ol=this.casillasPalabras.getChildren();
         for (int i=0;i<ol.size();i++){
             TextArea ta=(TextArea)ol.get(i);
+            ta.setStyle("  -fx-font-family: \"Arial\";" +
+"    -fx-font-size: 12px;\n" +
+"    -fx-background-color: #FFFFFF; " +
+"    -fx-text-fill: #ac3f3f; " +
+"     \n" +
+"    -fx-border-color: #D2B48C; " +
+"    -fx-border-width: 2px;   "+
+"    -fx-border-radius: 5px;  " +
+"    -fx-background-radius: 5px;  "+
+"    -fx-background-insets: 0; ");
             if (i==indice){
                 ta.setEditable(false);
-                ta.setStyle("-fx-background-color:#FFFF00;");
+                
             }
         }
         
@@ -138,6 +183,7 @@ public class ModoJuegoController implements Initializable {
         char[] strings=s.toCharArray();
               for (char c:strings){
                   TextArea ta=new TextArea();
+                  ta.setStyle("style.css");
                   ta.setOnKeyTyped(eh->{
                       if (ta.getText().length()==1){
                           ta.setEditable(false);
@@ -180,24 +226,24 @@ public class ModoJuegoController implements Initializable {
      public void setTimeIcons(int i){
         if (i>=0 && i<=6){
                this.timeLabel.setText(String.valueOf(i));
-               this.faceProgress.setImage(new Image("file:C:\\Users\\USUARIO\\OneDrive\\Escritorio\\ESTRUCTURAS DE DATOS\\TrieTreeProject\\TrieProject\\iconos\\good.jpg"));
-               this.faceProgress1.setImage(new Image("file:C:\\Users\\USUARIO\\OneDrive\\Escritorio\\ESTRUCTURAS DE DATOS\\TrieTreeProject\\TrieProject\\iconos\\good.jpg"));
+               this.faceProgress.setImage(new Image("file:iconos\\good.jpg"));
+               this.faceProgress1.setImage(new Image("file:iconos\\good.jpg"));
            }else  if (i>=7 && i<=15){
                this.timeLabel.setText(String.valueOf(i));
-               this.faceProgress.setImage(new Image("file:C:\\Users\\USUARIO\\OneDrive\\Escritorio\\ESTRUCTURAS DE DATOS\\TrieTreeProject\\TrieProject\\iconos\\gettinWorse.jpg"));
-                 this.faceProgress1.setImage(new Image("file:C:\\Users\\USUARIO\\OneDrive\\Escritorio\\ESTRUCTURAS DE DATOS\\TrieTreeProject\\TrieProject\\iconos\\gettinWorse.jpg"));
+               this.faceProgress.setImage(new Image("file:iconos\\gettinWorse.jpg"));
+                 this.faceProgress1.setImage(new Image("file:iconos\\gettinWorse.jpg"));
                
            }else if (i>=16 && i<=25){
                this.timeLabel.setText(String.valueOf(i));
-               this.faceProgress.setImage(new Image("file:C:\\Users\\USUARIO\\OneDrive\\Escritorio\\ESTRUCTURAS DE DATOS\\TrieTreeProject\\TrieProject\\iconos\\gettingbad.jpg"));
-               this.faceProgress1.setImage(new Image("file:C:\\Users\\USUARIO\\OneDrive\\Escritorio\\ESTRUCTURAS DE DATOS\\TrieTreeProject\\TrieProject\\iconos\\gettingbad.jpg"));
+               this.faceProgress.setImage(new Image("file:iconos\\gettingbad.jpg"));
+               this.faceProgress1.setImage(new Image("file:iconos\\gettingbad.jpg"));
            } 
            else if (i>=26 && i<=30){
                this.timeLabel.setText(String.valueOf(i));
-               this.faceProgress.setImage(new Image("file:C:\\Users\\USUARIO\\OneDrive\\Escritorio\\ESTRUCTURAS DE DATOS\\TrieTreeProject\\TrieProject\\iconos\\badbad.jpg"));
-               this.faceProgress1.setImage(new Image("file:C:\\Users\\USUARIO\\OneDrive\\Escritorio\\ESTRUCTURAS DE DATOS\\TrieTreeProject\\TrieProject\\iconos\\badbad.jpg"));
+               this.faceProgress.setImage(new Image("file:iconos\\badbad.jpg"));
+               this.faceProgress1.setImage(new Image("file:iconos\\badbad.jpg"));
            } 
     }
    
-    
+
 }

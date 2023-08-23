@@ -10,38 +10,41 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/19" fx:controller="com.mycompany.trieproject.ModoJuegoController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="AnchorPane" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.trieproject.ModoJuegoController">
    <children>
-      <Label fx:id="timeLabel" layoutX="283.0" layoutY="56.0" prefHeight="64.0" prefWidth="79.0" text="0">
-         <font>
-            <Font size="36.0" />
-         </font>
-      </Label>
-      <ImageView fx:id="faceProgress" fitHeight="96.0" fitWidth="130.0" layoutX="59.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../../../../../../../rx%20.jpg" />
-         </image>
-      </ImageView>
-      <ImageView fx:id="faceProgress1" fitHeight="96.0" fitWidth="130.0" layoutX="423.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../../../../../../../rx%20.jpg" />
-         </image>
-      </ImageView>
-      <VBox fx:id="containerPalabra" layoutX="66.0" layoutY="152.0" prefHeight="176.0" prefWidth="467.0">
+      <VBox fx:id="containerPalabra" layoutX="66.0" layoutY="27.0" prefHeight="308.0" prefWidth="467.0">
          <children>
-            <HBox fx:id="casillasPalabras" prefHeight="146.0" prefWidth="446.0" spacing="10.0">
+            <AnchorPane prefHeight="154.0" prefWidth="467.0">
+               <children>
+                  <Label fx:id="timeLabel" alignment="CENTER" layoutX="205.0" layoutY="40.0" prefHeight="64.0" prefWidth="56.0" text="0" textAlignment="CENTER">
+                     <font>
+                        <Font size="36.0" />
+                     </font>
+                  </Label>
+                  <ImageView fx:id="faceProgress" fitHeight="96.0" fitWidth="130.0" layoutX="14.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../../../rx%20.jpg" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="faceProgress1" fitHeight="96.0" fitWidth="130.0" layoutX="319.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../../../rx%20.jpg" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="wordMeaning" alignment="CENTER" layoutX="158.0" layoutY="104.0" prefHeight="18.0" prefWidth="150.0" textAlignment="CENTER">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <HBox fx:id="casillasPalabras" prefHeight="195.0" prefWidth="467.0" spacing="10.0" styleClass="AnchorPane" stylesheets="@styles.css">
                <VBox.margin>
                   <Insets top="30.0" />
                </VBox.margin>
             </HBox>
          </children>
       </VBox>
-      <Label fx:id="wordMeaning" layoutX="264.0" layoutY="142.0" prefHeight="18.0" prefWidth="150.0" textAlignment="CENTER">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <Button fx:id="siguiente" layoutX="280.0" layoutY="340.0" mnemonicParsing="false" text="next" />
+      <Button fx:id="siguiente" layoutX="280.0" layoutY="340.0" mnemonicParsing="false" stylesheets="@styles.css" text="next" />
    </children>
 </AnchorPane>
