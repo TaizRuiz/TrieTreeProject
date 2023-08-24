@@ -6,8 +6,17 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
     Created on : 22 ago 2023, 19:18:39
     Author     : USUARIO
 */
+.AnchorPane1{
+    -fx-background-image:url("https://cdn.dribbble.com/users/948461/screenshots/3872762/media/b9daf4a705c56da9167f40d73aa6c0b0.gif");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 700 500;
+    -fx-background-position: center center;
+}
 .AnchorPane{
     -fx-background-color:#FFFFFF;
+}
+.AnchorPane2{
+    -fx-background-color:#FEDE00;
 }
 .button{
 /*    -fx-border-color: black;
@@ -50,7 +59,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
     -fx-background-color: #FFFFFF; /* Fondo color */
     -fx-text-fill: #ac3f3f;        /*colo de las letras*/
      
-    -fx-border-color: #D2B48C;     /*Color del borde*/
+    -fx-border-color: #FFFF00;     /*Color del borde*/
     -fx-border-width: 2px;         /*Ancho del borde*/
     -fx-border-radius: 5px;        /*radio del borde*/
     -fx-background-radius: 5px;    /*radio del fondo que vaya acorde al radio del borde*/

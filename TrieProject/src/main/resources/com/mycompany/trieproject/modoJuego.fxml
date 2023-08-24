@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="AnchorPane" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.trieproject.ModoJuegoController">
-   <children>
+    <children>
       <VBox fx:id="containerPalabra" layoutX="66.0" layoutY="27.0" prefHeight="308.0" prefWidth="467.0">
          <children>
             <AnchorPane prefHeight="154.0" prefWidth="467.0">
