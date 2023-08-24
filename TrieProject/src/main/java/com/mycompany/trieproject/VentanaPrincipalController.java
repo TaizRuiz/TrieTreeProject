@@ -171,7 +171,7 @@ public class VentanaPrincipalController implements Initializable {
 
         });
 
-        this.tipStatistics.setOnAction(eh -> {
+        this.btnEstadisticas.setOnMouseClicked(eh -> {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/mycompany/trieproject/graphic.fxml"));
                 Parent root = loader.load();
